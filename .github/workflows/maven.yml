@@ -13,16 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Check formatting
-      uses: axel-op/googlejavaformat-action@v3
-      with:
-        args: "--set-exit-if-changed"    
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
         java-version: '19'
         distribution: 'temurin'
         cache: maven
+    - name: Check formatting
+      uses: axel-op/googlejavaformat-action@v3
+      with:
+        args: "--set-exit-if-changed"    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
