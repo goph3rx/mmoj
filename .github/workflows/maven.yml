@@ -24,7 +24,6 @@ jobs:
       with:
         args: "--replace"
         skip-commit: true
-        version: "1.15.0"
     - name: Print diffs
       run: git --no-pager diff --exit-code
     - name: Build with Maven
