@@ -13,11 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK
-      uses: actions/setup-java@v3
+    - name: Setup JDK
+      uses: graalvm/setup-graalvm@v1
       with:
-        java-version: '19'
-        distribution: 'temurin'
+        version: latest
+        java-version: "19"
+        components: native-image
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         cache: maven
     - name: Check formatting
       uses: axel-op/googlejavaformat-action@v3
