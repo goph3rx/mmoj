@@ -22,8 +22,10 @@ jobs:
     - name: Check formatting
       uses: axel-op/googlejavaformat-action@v3
       with:
-        args: "--set-exit-if-changed"
+        args: "--replace"
         version: "1.15.0"
+    - name: Print diffs
+      run: git --no-pager diff --exit-code
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
