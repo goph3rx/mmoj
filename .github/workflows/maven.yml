@@ -22,7 +22,7 @@ jobs:
     - name: Check formatting
       uses: axel-op/googlejavaformat-action@v3
       with:
-        args: "--replace"
+        args: --skip-reflowing-long-strings --replace
         skip-commit: true
     - name: Print diffs
       run: git --no-pager diff --exit-code
