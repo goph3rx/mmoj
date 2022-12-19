@@ -17,7 +17,13 @@ public class TransferService implements ITransferService {
   private final SecureRandom random = new SecureRandom();
 
   /** Adapter for the database. */
-  @Inject private ITransferDatabase database;
+  @Inject public ITransferDatabase database;
+
+  /** Create a new service. */
+  @Inject
+  public TransferService() {
+    // Constructor is required for DI
+  }
 
   @Override
   public Transfer generate(String account) {
