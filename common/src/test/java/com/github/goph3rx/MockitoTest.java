@@ -1,4 +1,4 @@
-package com.github.goph3rx.transfer;
+package com.github.goph3rx;
 
 import org.junit.After;
 import org.junit.Before;
