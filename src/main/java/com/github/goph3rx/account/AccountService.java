@@ -16,7 +16,13 @@ public class AccountService implements IAccountService {
   private static final String ALGORITHM = "SHA-256";
 
   /** Adapter for the database. */
-  @Inject private IAccountDatabase database;
+  @Inject public IAccountDatabase database;
+
+  /** Create a new service. */
+  @Inject
+  public AccountService() {
+    // Constructor is required for DI
+  }
 
   @Override
   public Optional<Account> find(String username, String password) {

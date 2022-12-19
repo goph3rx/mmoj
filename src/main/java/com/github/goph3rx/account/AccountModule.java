@@ -1,23 +1,26 @@
 package com.github.goph3rx.account;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
-import com.google.inject.name.Names;
+import dagger.Binds;
+import dagger.Module;
+import dagger.Provides;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /** Module that binds all account services. */
-public class AccountModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    // Configuration
-    bind(String.class)
-        .annotatedWith(Names.named("account.db"))
-        .toInstance(
-            System.getProperty(
-                "account.db",
-                "jdbc:postgresql://127.0.0.1/accounts?user=accounts&password=changeme"));
+@Module
+public interface AccountModule {
+  @Binds
+  @Singleton
+  IAccountDatabase bindDatabase(AccountDatabase impl);
 
-    // Services
-    bind(IAccountDatabase.class).to(AccountDatabase.class).in(Scopes.SINGLETON);
-    bind(IAccountService.class).to(AccountService.class).in(Scopes.SINGLETON);
+  @Binds
+  @Singleton
+  IAccountService bindService(AccountService impl);
+
+  @Provides
+  @Named("account.db")
+  static String provideJdbcUrl() {
+    return System.getProperty(
+        "account.db", "jdbc:postgresql://127.0.0.1/accounts?user=accounts&password=changeme");
   }
 }
