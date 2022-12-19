@@ -38,7 +38,7 @@ public class WorldDatabase implements IWorldDatabase {
                         "SELECT id, ip, port, current_players, maximum_players, is_online FROM worlds ORDER BY id")
                     .mapTo(World.class)
                     .list());
-    logger.info("Worlds are {}", result);
+    logger.debug("Worlds are {}", result);
     return result;
   }
 }
