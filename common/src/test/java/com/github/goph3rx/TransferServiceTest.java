@@ -3,11 +3,10 @@ package com.github.goph3rx;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
-import java.time.LocalDateTime;
-
 import com.github.goph3rx.transfer.ITransferDatabase;
 import com.github.goph3rx.transfer.Transfer;
 import com.github.goph3rx.transfer.TransferService;
+import java.time.LocalDateTime;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
