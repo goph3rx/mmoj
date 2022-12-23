@@ -50,6 +50,13 @@ public class AccountService implements IAccountService {
     return result;
   }
 
+  @Override
+  public void setLastWorld(String username, int lastWorld) {
+    logger.debug("Setting last world username='{}' lastWorld={}", username, lastWorld);
+    database.setLastWorld(username, lastWorld);
+    logger.debug("Success");
+  }
+
   /**
    * Compute the password hash.
    *

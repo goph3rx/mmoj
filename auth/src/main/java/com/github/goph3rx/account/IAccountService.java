@@ -12,4 +12,12 @@ public interface IAccountService {
    * @return Account, if found.
    */
   Optional<Account> find(String username, String password);
+
+  /**
+   * Update the last world entered.
+   *
+   * @param username Account username.
+   * @param lastWorld Last world.
+   */
+  void setLastWorld(String username, int lastWorld);
 }

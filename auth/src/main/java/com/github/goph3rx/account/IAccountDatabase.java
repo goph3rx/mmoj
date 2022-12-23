@@ -11,4 +11,12 @@ public interface IAccountDatabase {
    * @return Account record, if found.
    */
   Optional<Account> fetch(String username);
+
+  /**
+   * Update the last world entered.
+   *
+   * @param username Account username.
+   * @param lastWorld Last world.
+   */
+  void setLastWorld(String username, int lastWorld);
 }
