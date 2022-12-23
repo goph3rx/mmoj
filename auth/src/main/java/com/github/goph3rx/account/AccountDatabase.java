@@ -47,4 +47,17 @@ public class AccountDatabase implements IAccountDatabase {
     logger.debug("Account is {}", account);
     return account;
   }
+
+  @Override
+  public void setLastWorld(String username, int lastWorld) {
+    logger.debug("Setting last world username='{}' lastWorld={}", username, lastWorld);
+    db.useHandle(
+        handle ->
+            handle
+                .createUpdate("UPDATE accounts SET last_world = ? WHERE username = ?")
+                .bind(0, lastWorld)
+                .bind(1, username)
+                .execute());
+    logger.debug("Success");
+  }
 }

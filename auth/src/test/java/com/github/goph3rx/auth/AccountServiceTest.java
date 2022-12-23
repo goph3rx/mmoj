@@ -2,6 +2,7 @@ package com.github.goph3rx.auth;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.goph3rx.account.Account;
@@ -66,5 +67,14 @@ public class AccountServiceTest extends MockitoTest {
 
     // Then
     assertEquals(expected, actual);
+  }
+
+  @Test
+  public void setLastWorld() {
+    // When
+    service.setLastWorld("hello", 3);
+
+    // Then
+    verify(database).setLastWorld("hello", 3);
   }
 }
