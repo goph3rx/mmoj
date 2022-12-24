@@ -1,0 +1,12 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%-5level][%logger{20}][%X{remote}][%X{account}] %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <!-- Increase the minimum level to avoid noise  -->
+    <logger name="com.zaxxer.hikari" level="info"/>
+</configuration>
