@@ -39,6 +39,8 @@ public class AuthClient implements Runnable {
   private static final int IDLE_TIMEOUT_MINUTES = 10;
   /** Logger for this class. */
   private static final Logger logger = LoggerFactory.getLogger(AuthClient.class);
+  /** Secure random number generation. */
+  private static final SecureRandom random = new SecureRandom();
   /** Executor for scheduled tasks originating from this class. */
   private static final ScheduledExecutorService executor =
       Executors.newSingleThreadScheduledExecutor(Thread.ofVirtual().factory());
@@ -108,7 +110,6 @@ public class AuthClient implements Runnable {
       var start = Instant.now();
 
       // Generate the encryption key
-      var random = new SecureRandom();
       var cryptKey = new byte[16];
       random.nextBytes(cryptKey);
 
