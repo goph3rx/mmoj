@@ -8,5 +8,5 @@
         <appender-ref ref="STDOUT"/>
     </root>
     <!-- Increase the minimum level to avoid noise  -->
-    <logger name="com.zaxxer.hikari" level="info"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
 </configuration>
