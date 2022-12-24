@@ -26,7 +26,7 @@ public class AuthCodecTest {
     // Given
     var message =
         new ServerInit(
-            0xDEADBEEF,
+            0xdeadbeef,
             HexFormat.of()
                 .parseHex(
                     "9a277669023723947d0ebdccef967a24c715018df6ce66414fccd0f5bab54124b8caac6d7f52f8bbbab7de926b4f0ac4cc84793196e44928774a57737d0e4ee02962952257506e898846e353fa5fee31409a1d32124fb8df53d969dd7aa222866fa85e106f8a07e333d8ded4b10a8300b32d5f47cc5eab14033fa2bc0950b5c9"),
