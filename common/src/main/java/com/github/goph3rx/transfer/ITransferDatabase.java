@@ -10,7 +10,7 @@ public interface ITransferDatabase {
   void create(Transfer transfer);
 
   /**
-   * Remove expired transfer.
+   * Remove all expired transfers.
    *
    * @return Total number of transfers cleaned up.
    */
