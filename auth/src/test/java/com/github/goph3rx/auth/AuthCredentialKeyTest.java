@@ -27,6 +27,7 @@ public class AuthCredentialKeyTest {
     credentialKey.decrypt(credentials);
   }
 
+  @Test
   public void decryptSuccess() {
     // Given
     var credentialKey = new AuthCredentialKey();
