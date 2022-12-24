@@ -49,8 +49,7 @@ public class AuthCryptUtilTest {
   public void scrambleInitOverflow() {
     // Given
     var buffer = HexFormat.of().parseHex("0102030405060708");
-
-    var key = 0xDEADBEEF;
+    var key = 0xdeadbeef;
 
     // When/Then
     AuthCryptUtil.scrambleInit(buffer, 0, buffer.length, key);
