@@ -2,6 +2,9 @@ package com.github.goph3rx.transfer;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +15,13 @@ public class TransferService implements ITransferService {
   private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
   /** How long the transfer token is valid for. */
   private static final int TOKEN_VALIDITY_MINUTES = 10;
-
+  /** How often to clean up the expired tokens. */
+  private static final int TOKEN_CLEANUP_SECONDS = 10;
   /** Secure random number generation. */
-  private final SecureRandom random = new SecureRandom();
+  private static final SecureRandom random = new SecureRandom();
+  /** Executor for scheduled tasks originating from this class. */
+  private static final ScheduledExecutorService executor =
+      Executors.newSingleThreadScheduledExecutor(Thread.ofVirtual().factory());
 
   /** Adapter for the database. */
   @Inject public ITransferDatabase database;
@@ -39,5 +46,23 @@ public class TransferService implements ITransferService {
     database.create(transfer);
     logger.debug("Transfer is {}", transfer);
     return transfer;
+  }
+
+  @Override
+  public void start() {
+    executor.scheduleAtFixedRate(
+        () -> {
+          try {
+            var total = database.removeExpired();
+            if (total > 0) {
+              logger.info("Cleaned up {} expired transfer(s)", total);
+            }
+          } catch (Exception e) {
+            logger.warn("Failed to clean up expired transfers", e);
+          }
+        },
+        0,
+        TOKEN_CLEANUP_SECONDS,
+        TimeUnit.SECONDS);
   }
 }

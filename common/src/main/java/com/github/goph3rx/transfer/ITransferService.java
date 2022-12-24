@@ -9,4 +9,7 @@ public interface ITransferService {
    * @return Transfer details.
    */
   Transfer generate(String account);
+
+  /** Start the background tasks for this service. */
+  void start();
 }
