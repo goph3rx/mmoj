@@ -46,4 +46,14 @@ public class TransferDatabase implements ITransferDatabase {
                 .execute());
     logger.debug("Success");
   }
+
+  @Override
+  public int removeExpired() {
+    logger.debug("Removing expired transfers");
+    var total =
+        db.withHandle(
+            handle -> handle.createUpdate("DELETE FROM transfers WHERE expiry < NOW()").execute());
+    logger.debug("Cleaned up {} expired transfer(s)", total);
+    return total;
+  }
 }
