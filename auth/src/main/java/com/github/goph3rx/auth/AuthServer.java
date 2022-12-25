@@ -46,7 +46,6 @@ public class AuthServer {
             var scrambleKey = random.nextInt();
             var crypt = new AuthBlowfish();
             var connection = new AuthConnection(socket.accept(), codec, crypt, scrambleKey);
-            component.injectConnection(connection);
 
             // Create a client and start processing it
             var client = new AuthClient(connection);

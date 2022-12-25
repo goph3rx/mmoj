@@ -20,13 +20,6 @@ public interface AuthComponent {
   void injectClient(AuthClient client);
 
   /**
-   * Inject dependencies into the connection.
-   *
-   * @param connection Connection.
-   */
-  void injectConnection(AuthConnection connection);
-
-  /**
    * Inject dependencies into the server.
    *
    * @param server Server.
