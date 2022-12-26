@@ -37,7 +37,7 @@ public class AuthCodec implements IAuthCodec {
       case 0x05 -> decodeRequestServerList(wrapped);
       case 0x07 -> new ClientAuthGameGuard();
       default -> throw new IllegalArgumentException(
-          "Cannot decode message with id=%d".formatted(id));
+          "Cannot decode message with id=%h".formatted(id));
     };
   }
 

@@ -68,10 +68,10 @@ public class AuthConnection implements IAuthConnection {
       logger.debug("Sending {}", message);
 
       // Reset the buffer
-      Arrays.fill(this.write, (byte) 0);
+      Arrays.fill(write, (byte) 0);
 
       // Encode the message
-      var length = codec.encode(message, this.write, HEADER_SIZE);
+      var length = codec.encode(message, write, HEADER_SIZE);
 
       // Padding
       var pad = length % AuthCryptUtil.BLOCK_SIZE;
@@ -82,10 +82,10 @@ public class AuthConnection implements IAuthConnection {
       // Checksum and additional encryption
       if (message instanceof ServerInit) {
         length += 4;
-        length = AuthCryptUtil.scrambleInit(this.write, HEADER_SIZE, length, this.scrambleKey);
+        length = AuthCryptUtil.scrambleInit(write, HEADER_SIZE, length, scrambleKey);
       } else {
-        var checksum = AuthCryptUtil.calculateChecksum(this.write, HEADER_SIZE, length);
-        ByteBuffer.wrap(this.write, length, AuthCryptUtil.BLOCK_SIZE)
+        var checksum = AuthCryptUtil.calculateChecksum(write, HEADER_SIZE, length);
+        ByteBuffer.wrap(write, length, AuthCryptUtil.BLOCK_SIZE)
             .order(ByteOrder.LITTLE_ENDIAN)
             .putInt(checksum);
         length += 4;
@@ -100,7 +100,7 @@ public class AuthConnection implements IAuthConnection {
 
         // Encrypt
         try {
-          length = this.crypt.encrypt(this.write, HEADER_SIZE, length);
+          length = crypt.encrypt(write, HEADER_SIZE, length);
         } catch (ShortBufferException e) {
           throw new RuntimeException(e);
         }
@@ -111,19 +111,19 @@ public class AuthConnection implements IAuthConnection {
             logger.debug(
                 "Changing encryption key to {}", HexFormat.of().formatHex(init.cryptKey()));
           }
-          this.crypt = new AuthBlowfish(init.cryptKey());
+          crypt = new AuthBlowfish(init.cryptKey());
         }
       } finally {
         cryptLock.unlock();
       }
 
       // Write header
-      ByteBuffer.wrap(this.write, 0, HEADER_SIZE)
+      ByteBuffer.wrap(write, 0, HEADER_SIZE)
           .order(ByteOrder.LITTLE_ENDIAN)
           .putShort((short) (length + HEADER_SIZE));
 
       // Send the packet off
-      this.socket.getOutputStream().write(this.write, 0, length + HEADER_SIZE);
+      socket.getOutputStream().write(write, 0, length + HEADER_SIZE);
     } finally {
       sendLock.unlock();
     }
@@ -132,7 +132,7 @@ public class AuthConnection implements IAuthConnection {
   @Override
   public Optional<Object> receive() throws IOException {
     // Reset the buffer
-    Arrays.fill(this.read, (byte) 0);
+    Arrays.fill(read, (byte) 0);
 
     var length = 0;
     try {
@@ -159,7 +159,7 @@ public class AuthConnection implements IAuthConnection {
     // Decrypt
     cryptLock.lock();
     try {
-      length = this.crypt.decrypt(this.read, 0, length);
+      length = crypt.decrypt(read, 0, length);
     } catch (ShortBufferException e) {
       throw new RuntimeException(e);
     } finally {
@@ -168,17 +168,17 @@ public class AuthConnection implements IAuthConnection {
 
     // Remove padding
     while (length > 4
-        && this.read[length - 1] == 0
-        && this.read[length - 2] == 0
-        && this.read[length - 3] == 0
-        && this.read[length - 4] == 0) {
+        && read[length - 1] == 0
+        && read[length - 2] == 0
+        && read[length - 3] == 0
+        && read[length - 4] == 0) {
       length -= 4;
     }
 
     // Checksum
-    var expected = AuthCryptUtil.calculateChecksum(this.read, 0, length - AuthCryptUtil.BLOCK_SIZE);
+    var expected = AuthCryptUtil.calculateChecksum(read, 0, length - AuthCryptUtil.BLOCK_SIZE);
     var actual =
-        ByteBuffer.wrap(this.read, length - AuthCryptUtil.BLOCK_SIZE, AuthCryptUtil.BLOCK_SIZE)
+        ByteBuffer.wrap(read, length - AuthCryptUtil.BLOCK_SIZE, AuthCryptUtil.BLOCK_SIZE)
             .order(ByteOrder.LITTLE_ENDIAN)
             .getInt();
     if (expected != actual) {
@@ -187,7 +187,7 @@ public class AuthConnection implements IAuthConnection {
     }
 
     // Decode the message
-    var message = codec.decode(this.read, 0, length);
+    var message = codec.decode(read, 0, length);
     logger.debug("Received {}", message);
     return Optional.of(message);
   }
