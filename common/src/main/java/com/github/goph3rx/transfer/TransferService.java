@@ -49,6 +49,35 @@ public class TransferService implements ITransferService {
   }
 
   @Override
+  public boolean complete(String account, long auth, long play) {
+    // Fetch the details
+    var transfer = database.fetch(account);
+    if (transfer.isEmpty()) {
+      logger.warn("Transfer not found account='{}'", account);
+      return false;
+    }
+
+    // Check the tokens
+    var myTransfer = transfer.get();
+    if (myTransfer.auth() != auth) {
+      logger.warn("Invalid auth token expected={} actual={}", myTransfer.auth(), auth);
+      return false;
+    }
+    if (myTransfer.play() != play) {
+      logger.warn("Invalid play token expected={} actual={}", myTransfer.play(), play);
+      return false;
+    }
+
+    // Delete the token now that we've used it
+    try {
+      database.remove(account);
+    } catch (Exception e) {
+      logger.warn("Failed to delete token", e);
+    }
+    return true;
+  }
+
+  @Override
   public void start() {
     executor.scheduleAtFixedRate(
         () -> {

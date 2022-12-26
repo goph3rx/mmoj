@@ -2,6 +2,7 @@ package com.github.goph3rx.transfer;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.jdbi.v3.core.Jdbi;
@@ -43,6 +44,34 @@ public class TransferDatabase implements ITransferDatabase {
                 .bind(1, transfer.auth())
                 .bind(2, transfer.play())
                 .bind(3, transfer.expiry())
+                .execute());
+    logger.debug("Success");
+  }
+
+  @Override
+  public Optional<Transfer> fetch(String account) {
+    logger.debug("Fetching transfer with account='{}'", account);
+    var transfer =
+        db.withHandle(
+            handle ->
+                handle
+                    .createQuery(
+                        "SELECT account, auth, play, expiry FROM transfers WHERE account = ?")
+                    .bind(0, account)
+                    .mapTo(Transfer.class)
+                    .findOne());
+    logger.debug("Transfer is {}", transfer);
+    return transfer;
+  }
+
+  @Override
+  public void remove(String account) {
+    logger.debug("Removing transfer account='{}'", account);
+    db.useHandle(
+        handle ->
+            handle
+                .createUpdate("DELETE FROM transfers WHERE account = ?")
+                .bind(0, account)
                 .execute());
     logger.debug("Success");
   }
