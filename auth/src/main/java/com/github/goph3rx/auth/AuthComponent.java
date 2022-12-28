@@ -3,6 +3,7 @@ package com.github.goph3rx.auth;
 import com.github.goph3rx.account.AccountModule;
 import com.github.goph3rx.transfer.ITransferService;
 import com.github.goph3rx.transfer.TransferModule;
+import com.github.goph3rx.world.IWorldService;
 import com.github.goph3rx.world.WorldModule;
 import dagger.Component;
 import javax.inject.Singleton;
@@ -26,6 +27,9 @@ public interface AuthComponent {
    */
   void injectServer(AuthServer server);
 
-  /** Get the service for world transfers */
+  /** Get the service for world transfers. */
   ITransferService transfers();
+
+  /** Get the service for managing registered worlds. */
+  IWorldService worlds();
 }
