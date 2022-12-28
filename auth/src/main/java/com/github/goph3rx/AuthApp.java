@@ -42,6 +42,7 @@ public class AuthApp {
 
     // Start background tasks
     component.transfers().start();
+    component.worlds().start();
 
     // Start the server
     try {
