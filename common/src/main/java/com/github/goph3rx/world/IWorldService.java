@@ -6,4 +6,14 @@ import java.util.List;
 public interface IWorldService {
   /** Fetch the list of all worlds. */
   List<World> list();
+
+  /**
+   * Save the status of the game world.
+   *
+   * @param world World status.
+   */
+  void save(World world);
+
+  /** Start the background tasks for this service. */
+  void start();
 }
