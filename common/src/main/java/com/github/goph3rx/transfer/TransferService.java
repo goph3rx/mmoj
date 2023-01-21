@@ -50,6 +50,7 @@ public class TransferService implements ITransferService {
 
   @Override
   public boolean complete(String account, long auth, long play) {
+    logger.debug("Completing transfer account='{}' auth={} play={}", account, auth, play);
     // Fetch the details
     var transfer = database.fetch(account);
     if (transfer.isEmpty()) {
@@ -74,6 +75,7 @@ public class TransferService implements ITransferService {
     } catch (Exception e) {
       logger.warn("Failed to delete token", e);
     }
+    logger.debug("Success");
     return true;
   }
 
