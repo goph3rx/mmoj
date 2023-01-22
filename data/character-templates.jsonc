@@ -1,0 +1,59 @@
+[
+  // Human Fighter
+  {
+    "race": "HUMAN",
+    "class": 0
+  },
+  // Human Mage
+  {
+    "race": "HUMAN",
+    "class": 10
+  },
+  // Elf Fighter
+  {
+    "race": "ELF",
+    "class": 18
+  },
+  // Elf Mage
+  {
+    "race": "ELF",
+    "class": 25
+  },
+  // Dark Elf Fighter
+  {
+    "race": "DARK_ELF",
+    "class": 31
+  },
+  // Dark Elf Mage
+  {
+    "race": "DARK_ELF",
+    "class": 38
+  },
+  // Orc Fighter
+  {
+    "race": "ORC",
+    "class": 44
+  },
+  // Orc Mage
+  {
+    "race": "ORC",
+    "class": 49
+  },
+  // Dwarf Fighter
+  {
+    "race": "DWARF",
+    "class": 53
+  },
+  // Male Soldier
+  {
+    "race": "KAMAEL",
+    "class": 123,
+    "gender": "MALE"
+  },
+  // Female Soldier
+  {
+    "race": "KAMAEL",
+    "class": 124,
+    "gender": "FEMALE"
+  }
+]
